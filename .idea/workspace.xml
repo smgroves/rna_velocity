@@ -3,12 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="0cb9b104-3729-4411-8e16-7f451edb822f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Transition matrix calculator/matrix_calc_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Transition matrix calculator/matrix_calc_main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Two gene transition matrix calculator 2/matrix_calc_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Two gene transition matrix calculator 2/matrix_calc_main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/network_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/network_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/one_gene/20cells_2timepoints_1timestep.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/one_gene/s_20cells_2timepoints_1timestep.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/one_gene/u_20cells_2timepoints_1timestep.csv" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -18,14 +13,14 @@
   </component>
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/rna_velocity$matrix_calc_main.coverage" NAME="matrix_calc_main Coverage Results" MODIFIED="1573591416594" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Transition matrix calculator" />
-    <SUITE FILE_PATH="coverage/rna_velocity$matrix_calc_main__1_.coverage" NAME="matrix_calc_main (1) Coverage Results" MODIFIED="1573588542311" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Two gene transition matrix calculator 2" />
+    <SUITE FILE_PATH="coverage/rna_velocity$matrix_calc_main__1_.coverage" NAME="matrix_calc_main (1) Coverage Results" MODIFIED="1573591794722" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Two gene transition matrix calculator 2" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Transition matrix calculator/matrix_calc_main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="158">
+            <state relative-caret-position="720">
               <caret line="48" selection-start-line="48" selection-end-line="48" />
             </state>
           </provider>
@@ -34,17 +29,29 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Two gene transition matrix calculator 2/matrix_calc_main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="253">
-              <caret line="47" selection-start-line="47" selection-end-line="47" />
+            <state relative-caret-position="284">
+              <caret line="45" column="15" selection-start-line="45" selection-start-column="15" selection-end-line="45" selection-end-column="15" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/output/two_gene/time_0/s_10_cells.csv">
+          <provider editor-type-id="csv-table-editor">
+            <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
+          </provider>
+          <provider selected="true" editor-type-id="csv-text-editor">
+            <state relative-caret-position="45">
+              <caret line="3" selection-start-line="1" selection-start-column="7" selection-end-line="3" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/network_utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
+            <state relative-caret-position="300">
+              <caret line="23" selection-start-line="23" selection-end-line="23" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
@@ -67,9 +74,9 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Two gene transition matrix calculator 2/matrix_calc_main.py" />
         <option value="$PROJECT_DIR$/Transition matrix calculator/matrix_calc_main.py" />
         <option value="$PROJECT_DIR$/network_utils.py" />
+        <option value="$PROJECT_DIR$/Two gene transition matrix calculator 2/matrix_calc_main.py" />
       </list>
     </option>
   </component>
@@ -83,7 +90,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -100,12 +106,14 @@
               <item name="rna_velocity" type="b2602c69:ProjectViewProjectNode" />
               <item name="rna_velocity" type="462c0819:PsiDirectoryNode" />
               <item name="output" type="462c0819:PsiDirectoryNode" />
-              <item name="one_gene" type="462c0819:PsiDirectoryNode" />
+              <item name="two_gene" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="rna_velocity" type="b2602c69:ProjectViewProjectNode" />
               <item name="rna_velocity" type="462c0819:PsiDirectoryNode" />
-              <item name="Transition matrix calculator" type="462c0819:PsiDirectoryNode" />
+              <item name="output" type="462c0819:PsiDirectoryNode" />
+              <item name="two_gene" type="462c0819:PsiDirectoryNode" />
+              <item name="time_0" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="rna_velocity" type="b2602c69:ProjectViewProjectNode" />
@@ -116,6 +124,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -142,7 +151,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.matrix_calc_main">
+  <component name="RunManager" selected="Python.matrix_calc_main (1)">
     <configuration name="matrix_calc_main (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="rna_velocity" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -189,8 +198,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.matrix_calc_main" />
         <item itemvalue="Python.matrix_calc_main (1)" />
+        <item itemvalue="Python.matrix_calc_main" />
       </list>
     </recent_temporary>
   </component>
@@ -205,23 +214,23 @@
       <option name="presentableId" value="Default" />
       <updated>1573579443237</updated>
       <workItem from="1573579445456" duration="894000" />
-      <workItem from="1573588410174" duration="3090000" />
+      <workItem from="1573588410174" duration="3727000" />
+      <workItem from="1573595889243" duration="1236000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3984000" />
+    <option name="totallyTimeSpent" value="5857000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="877" extended-state="0" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2532189" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.13662376" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.42038217" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.42038217" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -243,51 +252,51 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/output/one_gene/u_20cells_2timepoints_1timestep.csv">
-      <provider selected="true" editor-type-id="csv-text-editor" />
+    <entry file="file://$PROJECT_DIR$/output/one_gene/u_20cells_2timepoints_1timestep.csv" />
+    <entry file="file://$PROJECT_DIR$/output/one_gene/s_20cells_2timepoints_1timestep.csv" />
+    <entry file="file://$PROJECT_DIR$/output/one_gene/time_0/u_20_cells.csv">
       <provider editor-type-id="csv-table-editor">
         <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Two gene transition matrix calculator 2/matrix_calc_main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="47" selection-start-line="47" selection-end-line="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/output/one_gene/s_20cells_2timepoints_1timestep.csv">
       <provider selected="true" editor-type-id="csv-text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/output/one_gene/time_0/s_20_cells.csv">
       <provider editor-type-id="csv-table-editor">
         <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
       </provider>
+      <provider selected="true" editor-type-id="csv-text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/Transition matrix calculator/matrix_calc_main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="158">
+        <state relative-caret-position="720">
           <caret line="48" selection-start-line="48" selection-end-line="48" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/output/one_gene/time_0/u_20_cells.csv">
-      <provider selected="true" editor-type-id="csv-text-editor" />
-      <provider editor-type-id="csv-table-editor">
-        <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/output/one_gene/time_0/s_20_cells.csv">
-      <provider selected="true" editor-type-id="csv-text-editor" />
-      <provider editor-type-id="csv-table-editor">
-        <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/network_utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
+        <state relative-caret-position="300">
+          <caret line="23" selection-start-line="23" selection-end-line="23" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Two gene transition matrix calculator 2/matrix_calc_main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="284">
+          <caret line="45" column="15" selection-start-line="45" selection-start-column="15" selection-end-line="45" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/output/two_gene/time_0/s_10_cells.csv">
+      <provider editor-type-id="csv-table-editor">
+        <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
+      </provider>
+      <provider selected="true" editor-type-id="csv-text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" selection-start-line="1" selection-start-column="7" selection-end-line="3" />
         </state>
       </provider>
     </entry>

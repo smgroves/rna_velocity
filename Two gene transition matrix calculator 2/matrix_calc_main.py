@@ -44,7 +44,7 @@ print("Fake data successfully generated!")
 #print("s_y is ", s_y.flatten())
 
 #Save fake data
-save_data(u_x,s_x,outdir,N_cells,num_timepoints,time_between_measurements, model = "one_gene")
+save_data([u_x,u_y],[s_x,s_y],outdir,N_cells,num_timepoints, model = "two_gene")
 
 
 
