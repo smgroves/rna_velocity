@@ -17,7 +17,9 @@ sys.path.insert(2, 'simulation_files')
 
 from get_fake_data import generate_fake_data
 from get_t_matrix import get_state_list, get_t_matrix
+from network_utils import save_data
 #from generate_IC import generate_IC
+outdir= '/Users/sarahmaddox/Documents/workspace/rna_velocity/output/'
 
 # ============================================================================================
 
@@ -41,6 +43,8 @@ print("Fake data successfully generated!")
 #print("s_x is ", s_x.flatten())
 #print("s_y is ", s_y.flatten())
 
+#Save fake data
+save_data(u_x,s_x,outdir,N_cells,num_timepoints,time_between_measurements, model = "one_gene")
 
 
 
