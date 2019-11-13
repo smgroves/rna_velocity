@@ -18,7 +18,11 @@ from get_fake_data import generate_fake_data
 from get_t_matrix import get_state_list, get_t_matrix
 from network_utils import save_data
 #from IC_generator import generate_IC
+import random
 
+seed = random.randint(0, 1000000000)
+
+random.seed(seed)
 outdir= '/Users/sarahmaddox/Documents/workspace/rna_velocity/output/'
 # ============================================================================================
 
@@ -46,7 +50,7 @@ print("Fake data successfully generated!")
 state_list, num_states, state_boundaries = get_state_list(s)
 
 #Save fake data
-save_data([u],[s],outdir, N_cells,num_timepoints, model = "one_gene")
+save_data([u],[s],outdir, N_cells,num_timepoints, model = "one_gene", seed = seed)
 
 if calc_t_matrix == 'yes':
     print("Calculating transition matrix...")

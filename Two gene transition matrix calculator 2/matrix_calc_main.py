@@ -20,9 +20,9 @@ from get_t_matrix import get_state_list, get_t_matrix
 from network_utils import save_data
 #from generate_IC import generate_IC
 outdir= '/Users/sarahmaddox/Documents/workspace/rna_velocity/output/'
-
+from random import random
 # ============================================================================================
-
+random.seed(0)
 calc_t_matrix = 'no'    #options: 'yes' and 'no'
 
 
@@ -30,7 +30,7 @@ calc_t_matrix = 'no'    #options: 'yes' and 'no'
 #print(num_zeros)
 #print(protein_IC)
 
-N_cells = 10
+N_cells = 20
 num_timepoints = 2                   # number of time points, INCLUDING initial time point
 time_between_measurements =  1        # currently arbitrary units
 
