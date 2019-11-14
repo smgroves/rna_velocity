@@ -20,9 +20,9 @@ from get_t_matrix import get_state_list, get_t_matrix
 from network_utils import save_data
 #from generate_IC import generate_IC
 outdir= '/Users/sarahmaddox/Documents/workspace/rna_velocity/output/'
-from random import random
+import random
 # ============================================================================================
-random.seed(0)
+seed = random.randint(0, 1000000000)
 calc_t_matrix = 'no'    #options: 'yes' and 'no'
 
 
@@ -44,7 +44,7 @@ print("Fake data successfully generated!")
 #print("s_y is ", s_y.flatten())
 
 #Save fake data
-save_data([u_x,u_y],[s_x,s_y],outdir,N_cells,num_timepoints, model = "two_gene")
+save_data([u_x,u_y],[s_x,s_y],outdir,N_cells,num_timepoints, model = "two_gene",seed = seed)
 
 
 

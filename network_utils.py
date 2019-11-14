@@ -11,13 +11,13 @@ def save_data(u_list,s_list,dir_prefix, N_cells, N_timepoints, model, seed):
             pass
 
 
-        data = pd.DataFrame([u[:,tp] for u in u_list], columns = [f"cell_{str(i)}" for i in range(N_cells)])
+        data = pd.DataFrame([u[:,tp] for u in u_list], columns = [f"cell_{str(i)}_{tp}" for i in range(N_cells)])
         data.index = [f"gene_{str(i)}" for i in range(len(u_list))]
         print(data)
 
         data.to_csv(op.join(dir_prefix, f'{model}/time_{tp}/u_{N_cells}_cells_{seed}.csv'))
 
-        data = pd.DataFrame([s[:,tp] for s in s_list], columns = [f"cell_{str(i)}" for i in range(N_cells)])
+        data = pd.DataFrame([s[:,tp] for s in s_list], columns = [f"cell_{str(i)}_{tp}" for i in range(N_cells)])
         data.index = [f"gene_{str(i)}" for i in range(len(u_list))]
 
         data.to_csv(op.join(dir_prefix,f'{model}/time_{tp}/s_{N_cells}_cells_{seed}.csv'))
