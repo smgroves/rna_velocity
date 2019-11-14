@@ -40,7 +40,7 @@ def data2loom(indir, model, timepoints = 2, seed = 0, N_cells = 20, delim = ',')
     total = np.array(datas)+np.array(datau)
     filename = f"{seed}.loom"
     ra = {"Gene": datas.index.values}
-    ca = {"CellID": datas.columns.values}
+    ca = {"CellID": datas.columns.values, 'SampleID': np.array(time)}
     out_dir = f"{indir}/{model}/"
 
     try:
@@ -50,6 +50,7 @@ def data2loom(indir, model, timepoints = 2, seed = 0, N_cells = 20, delim = ',')
             ds.set_layer(name=layer_name, matrix=matrix, dtype='float32')
         ds.attrs["velocyto.__version__"] = vcy.__version__
         ds.attrs["velocyto.logic"] = 'Default'
+        ds.attrs['SampleID'] = time
         ds.close()
 
     except AttributeError:
@@ -71,12 +72,54 @@ def import_loom(loom):
     print("Spliced shape:", vlm.S.shape, "Unspliced shape:", vlm.U.shape)
     return vlm
 
+def plot_fractions(self, save2file: str = None) -> None:
+    """Plots a barplot showing the abundance of spliced/unspliced molecules in the dataset
+    Arguments
+    ---------
+    save2file: str (default: None)
+        If not None specifies the file path to which plots get saved
+    Returns
+    -------
+    Nothing, it plots a barplot
+    """
+    plt.figure(figsize=(3.2, 5))
+    try:
+        chips, chip_ix = np.unique(self.ca["SampleID"], return_inverse=1)
+    except KeyError:
+        chips, chip_ix = np.unique([i.split(":")[0] for i in self.ca["CellID"]], return_inverse=1)
+    n = len(chips)
+    for i in np.unique(chip_ix):
+        print(i)
+        print(self.S[:, chip_ix == i])
+        tot_mol_cell_submatrixes = [X[:, chip_ix == i].sum(0) for X in [self.S, self.A, self.U]]
+        total = np.sum(tot_mol_cell_submatrixes, 0)
+        _mean = [np.mean(j / total) for j in tot_mol_cell_submatrixes]
+        _std = [np.std(j / total) for j in tot_mol_cell_submatrixes]
+
+        plt.ylabel("Fraction")
+        plt.bar(np.linspace(-0.2, 0.2, n)[i] + np.arange(3), _mean, 0.5 / (n * 1.05), label=chips[i])
+        plt.errorbar(np.linspace(-0.2, 0.2, n)[i] + np.arange(3), _mean, _std, c="k", fmt="none", lw=1, capsize=2)
+
+        # Hide the right and top spines
+        plt.gca().spines['right'].set_visible(False)
+        plt.gca().spines['top'].set_visible(False)
+        # Only show ticks on the left and bottom spines
+        plt.gca().yaxis.set_ticks_position('left')
+        plt.gca().xaxis.set_ticks_position('bottom')
+        plt.gca().spines['left'].set_bounds(0, 0.8)
+        plt.legend()
+
+    plt.xticks(np.arange(3), ["spliced", "ambiguous", "unspliced"])
+    plt.tight_layout()
+    if save2file:
+        plt.savefig(save2file, bbox_inches="tight")
+
 def velocyto_qc(vlm, threshold = .5, min_counts = 40, min_cells = 30, num_cells = [5000,10000]):
 
     print("Quality Control of loom file from velocyto...")
-    print("...Removing cells with extremely low unspliced counts < %f percent"%threshold)
-    print("... below: ", np.percentile(vlm.initial_Ucell_size, threshold))
-    vlm.filter_cells(bool_array=vlm.initial_Ucell_size > np.percentile(vlm.initial_Ucell_size, threshold))
+    # print("...Removing cells with extremely low unspliced counts < %f percent"%threshold)
+    # print("... below: ", np.percentile(vlm.initial_Ucell_size, threshold))
+    # vlm.filter_cells(bool_array=vlm.initial_Ucell_size > np.percentile(vlm.initial_Ucell_size, threshold))
 
     print("Plotting U/S fractions...")
     plt.figure()
