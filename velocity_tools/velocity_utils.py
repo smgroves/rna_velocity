@@ -11,7 +11,7 @@ from sklearn.neighbors import NearestNeighbors
 import rpy2.robjects as robj
 from rpy2.robjects.packages import importr
 
-def data2loom(indir, model, timepoints = 2, seed = 0, N_cells = 20, delim = ','):
+def data2loom(indir, model, timepoints = 2, seed = 0, N_cells = 20, delim = ',', multfactor = 1):
     #Indir is directory path to output folder
     # model is one_gene, two_gene, etc.
     #timepoint is a single number, starting at 0 for first timepoint
@@ -31,12 +31,15 @@ def data2loom(indir, model, timepoints = 2, seed = 0, N_cells = 20, delim = ',')
         else:
             datas = datas.merge(tmp_datas, on = datas.index)
             datau = datau.merge(tmp_datau, on = datau.index)
+            datas.index = datas['key_0']
+            datas = datas.drop('key_0', axis=1)
+            datau.index = datau['key_0']
+            datau = datau.drop('key_0', axis=1)
         for i in [str(timepoint)]*N_cells:
             time.append(i)
-    datas.index = datas['key_0']
-    datas = datas.drop('key_0',axis = 1)
-    datau.index = datau['key_0']
-    datau = datau.drop('key_0', axis = 1)
+
+    datas = datas*multfactor
+    datau = datau*multfactor
     total = np.array(datas)+np.array(datau)
     filename = f"{seed}.loom"
     ra = {"Gene": datas.index.values}
@@ -67,7 +70,7 @@ def data2loom(indir, model, timepoints = 2, seed = 0, N_cells = 20, delim = ',')
 def import_loom(loom):
     print('Importing loom file...')
     vlm = vcy.VelocytoLoom(loom)
-    print("Column attributes:", vlm.ca)
+    print("Column attributes:", vlm.ca.keys())
     print("Row attributes:", vlm.ra['Gene'])
     print("Spliced shape:", vlm.S.shape, "Unspliced shape:", vlm.U.shape)
     return vlm
@@ -82,15 +85,13 @@ def plot_fractions(self, save2file: str = None) -> None:
     -------
     Nothing, it plots a barplot
     """
-    plt.figure(figsize=(3.2, 5))
+    plt.figure(figsize=(4, 4))
     try:
         chips, chip_ix = np.unique(self.ca["SampleID"], return_inverse=1)
     except KeyError:
         chips, chip_ix = np.unique([i.split(":")[0] for i in self.ca["CellID"]], return_inverse=1)
     n = len(chips)
     for i in np.unique(chip_ix):
-        print(i)
-        print(self.S[:, chip_ix == i])
         tot_mol_cell_submatrixes = [X[:, chip_ix == i].sum(0) for X in [self.S, self.A, self.U]]
         total = np.sum(tot_mol_cell_submatrixes, 0)
         _mean = [np.mean(j / total) for j in tot_mol_cell_submatrixes]
@@ -167,31 +168,38 @@ def filter_by_genes(vlm, num_cells = 7000, ftype = "all"):
 
 def norm_vlm(vlm):
     print("Normalizing S and U by relative size...")
-    vlm._normalize_S(relative_size=vlm.S.sum(0), target_size=vlm.S.sum(0).mean())
-    vlm._normalize_U(relative_size=vlm.U.sum(0), target_size=vlm.U.sum(0).mean())
+    vlm._normalize_S(relative_size=vlm.S.sum(0), target_size=vlm.S.sum(0).mean(), log = True)
+    vlm._normalize_U(relative_size=vlm.U.sum(0), target_size=vlm.U.sum(0).mean(), log = True)
     return vlm
 
-def gamma_fit(vlm):
-
+def gamma_fit(vlm, pca = True, n_components = 100, knn = True, pick_cutoff = True, use_imputed_data = False,
+              use_size_norm = True, weighted = False, b_sight = 100, k = 50, balanced = True):
     print('...Performing PCA')
-    vlm.perform_PCA()
+    vlm.perform_PCA(n_components=n_components)
     print("Fitting gamma (degradation rate) parameter (~ u/s at steady state)...")
-    plt.figure()
-    plt.plot(np.cumsum(vlm.pca.explained_variance_ratio_)[:100])
-    n_comps = np.where(np.diff(np.diff(np.cumsum(vlm.pca.explained_variance_ratio_))>0.002))[0][0]
-    plt.axvline(n_comps, c="k")
-    plt.show()
+    # plt.figure()
+    # plt.plot(np.cumsum(vlm.pca.explained_variance_ratio_)[:100])
+    # try:
+    #     n_comps = np.where(np.diff(np.diff(np.cumsum(vlm.pca.explained_variance_ratio_))>0.002))[0][0]
+    # except IndexError: n_comps = n_components
+    # plt.axvline(n_comps, c="k")
+    # plt.show()
     #variable: change the 0.002 below to reflect where to cut off the pca; 0.002 is the minimum difference
     #you want when adding another PC dimension; lower = more dimensions; higher = fewer dimensions = less noise
-    co = input("Input cutoff for change in cumulative explained variance; default is 0.002")
-    n_comps = np.where(np.diff(np.diff(np.cumsum(vlm.pca.explained_variance_ratio_))>float(co)))[0][0]
-    plt.figure()
-    plt.plot(np.cumsum(vlm.pca.explained_variance_ratio_)[:100])
-    plt.axvline(n_comps, c="k")
-    plt.show()
-    print('...performing kNN imputation (runs slow)')
-    vlm.knn_imputation(n_pca_dims=n_comps, k=500, balanced=True, b_sight=3000, b_maxl=1500, n_jobs=16)
-    vlm.fit_gammas()
+    if pick_cutoff == True:
+        co = input("Input cutoff for change in cumulative explained variance; default is 0.002")
+        n_comps = np.where(np.diff(np.diff(np.cumsum(vlm.pca.explained_variance_ratio_))>float(co)))[0][0]
+        plt.figure()
+        plt.plot(np.cumsum(vlm.pca.explained_variance_ratio_)[:100])
+        plt.axvline(n_comps, c="k")
+        plt.show()
+    if knn == True:
+        print('...performing kNN imputation (runs slowly)')
+        if balanced == True:
+            vlm.knn_imputation(n_pca_dims=n_comps, k=k, balanced=True, b_sight=b_sight, b_maxl=1500, n_jobs=16)
+        else:
+            vlm.knn_imputation(n_pca_dims=n_comps, k = k)
+    vlm.fit_gammas(use_imputed_data=use_imputed_data, use_size_norm=use_size_norm, weighted=weighted)
     return vlm
 
 def fit_transform_clust(vlm, fit_type = "UMAP", clust = False, n_clust = 4):
@@ -216,14 +224,14 @@ def fit_transform_clust(vlm, fit_type = "UMAP", clust = False, n_clust = 4):
 
     return vlm
 
-def calc_velocity_and_shift(vlm, name = None, assumption = "constant_velocity"):
+def calc_velocity_and_shift(vlm, name = None, assumption = "constant_velocity", which_s = 'Sx', delta_t = 1):
 
     print("Calculating velocity...")
-    vlm.predict_U()
+    vlm.predict_U(which_S=which_s)
     vlm.calculate_velocity()
     vlm.calculate_shift(assumption=assumption)
     print(f"Extrapolating cell at t with assumption {assumption}...")
-    vlm.extrapolate_cell_at_t(delta_t=1.)
+    vlm.extrapolate_cell_at_t(delta_t=delta_t)
     if name == None:
         print(colored("...saving hdf5 file as vlm","blue"))
         vlm.to_hdf5("vlm")
