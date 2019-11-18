@@ -31,7 +31,7 @@ calc_t_matrix = 'no'    #options: 'yes' and 'no'
 #print(protein_IC)
 
 N_cells = 20
-num_timepoints = 2                   # number of time points, INCLUDING initial time point
+num_timepoints = 6                   # number of time points, INCLUDING initial time point
 time_between_measurements =  1        # currently arbitrary units
 
 

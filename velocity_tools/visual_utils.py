@@ -4,18 +4,40 @@ import velocyto as vcy
 
 
 ## Plot in original dimensions (for low-dimensional data)
-def plot_original_arrows(vlm, gene_0 = 0,gene_1 = 1, which_S = 'Sx_sz'):
+def plot_2_gene_arrows(vlm, gene_0 = 0,gene_1 = 1, which_S = 'Sx_sz'):
     if which_S == 'Sx_sz':
         arrowprops = dict(
             arrowstyle="->")
         x = vlm.Sx_sz[gene_0]
         y = vlm.Sx_sz[gene_1]
         fig, ax = plt.subplots()
-        ax.scatter(x,y, c = vlm.colorandum)
+        scatter = ax.scatter(x,y, c=vlm.colorandum, label=vlm.colorandum)
+        legend1 = ax.legend(*scatter.legend_elements(),
+                            loc="upper right", title="Time points")
+        ax.add_artist(legend1)
         for i in range(len(x)):
             ax.annotate('',(vlm.Sx_sz_t[gene_0][i],vlm.Sx_sz_t[gene_1][i]), (x[i],y[i]), arrowprops = arrowprops)
+        plt.xlabel(f"Gene {gene_0} Counts")
+        plt.xlabel(f"Gene {gene_1} Counts")
+        plt.title("Two Gene Model Spliced Counts")
+
         plt.show()
-## UMAP
+    elif which_S == 'Sx':
+        arrowprops = dict(
+            arrowstyle="->")
+        x = vlm.Sx[gene_0]
+        y = vlm.Sx[gene_1]
+        fig, ax = plt.subplots()
+        scatter = ax.scatter(x,y, c = vlm.colorandum, label = vlm.colorandum)
+
+        for i in range(len(x)):
+            ax.annotate('',(vlm.Sx_t[gene_0][i],vlm.Sx_t[gene_1][i]), (x[i],y[i]), arrowprops = arrowprops)
+            plt.tight_layout()
+        plt.xlabel(f"Gene {gene_0} Counts")
+        plt.xlabel(f"Gene {gene_1} Counts")
+        plt.title("Two Gene Model Spliced Counts")
+        plt.show()
+
 
 ## tSNE
 def plot_tsne(vlm, cluster_list = ['NE', 'NE-V1', 'NE-V2', 'NON-NE', 'NA']):

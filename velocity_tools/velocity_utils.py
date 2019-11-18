@@ -97,7 +97,7 @@ def import_loom(loom):
     print("Spliced shape:", vlm.S.shape, "Unspliced shape:", vlm.U.shape)
     return vlm
 
-def plot_fractions(vlm, save2file: str = None):
+def plot_fractions(self, save2file: str = None):
     """Plots a barplot showing the abundance of spliced/unspliced molecules in the dataset
     Arguments
     ---------
@@ -174,46 +174,8 @@ def knn_impute(vlm, n_comps = 100, knn = True, b_sight = 100, k = 50, balanced =
             vlm.Ux_sz = vlm.U_sz
     return vlm
 
-def fit_transform_clust(vlm, fit_type = "UMAP", clust = False, n_clust = 4):
-    seed = 2
-    print("Fitting and transforming the data...")
-    if fit_type == "UMAP":
-        import umap
-        um = umap.UMAP()
-        vlm.ts = um.fit_transform(vlm.pcs[:, :20])
-        print(f"...embedding by {fit_type} saved as vlm.ts")
-    elif fit_type == "TSNE":
-        from sklearn.manifold import TSNE
-        bh_tsne = TSNE()
-        vlm.ts = bh_tsne.fit_transform(vlm.pcs[:, :20])
-        print(f"...embedding by {fit_type} saved as vlm.ts")
-    if clust == True:
-        print("...clustering based on embedding saved under vlm.ca['ClusterName]")
-        from sklearn.cluster import KMeans
-        km = KMeans(n_clusters=n_clust, random_state=0).fit(vlm.ts)
-        vlm.ca['ClusterName'] = km.labels_
-        vlm.set_clusters(vlm.ca["ClusterName"])
-
-    return vlm
-
-def calc_velocity_and_shift(vlm, name = None, assumption = "constant_velocity", which_s = 'Sx', delta_t = 1):
-
-    print("Calculating velocity...")
-    vlm.predict_U(which_S=which_s)
-    vlm.calculate_velocity()
-    vlm.calculate_shift(assumption=assumption)
-    print(f"Extrapolating cell at t with assumption {assumption}...")
-    vlm.extrapolate_cell_at_t(delta_t=delta_t)
-    if name == None:
-        print(colored("...saving hdf5 file as vlm","blue"))
-        vlm.to_hdf5("vlm")
-    else:
-        print(colored(f"...saving hdf5 file as {name}", "blue"))
-        vlm.to_hdf5(name)
-    return vlm
-
 def estimate_trans_prob(vlm, embed = "ts"):
-    os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
+    os.environ['KMP_DUPLICATE_LIB_OK'] = 'True' #needed so that python doesn't crash
     print(f"Estimating transition probabilities with embed = {embed}...")
     # Try running outside kernel (run in ipython/terminal)
     # import os
