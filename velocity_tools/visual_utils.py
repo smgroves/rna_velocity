@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import velocyto as vcy
-
+from velocyto.analysis import scatter_viz
 
 ## Plot in original dimensions (for low-dimensional data)
 def plot_2_gene_arrows(vlm, gene_0 = 0,gene_1 = 1, which_S = 'Sx_sz'):
@@ -38,21 +38,40 @@ def plot_2_gene_arrows(vlm, gene_0 = 0,gene_1 = 1, which_S = 'Sx_sz'):
         plt.title("Two Gene Model Spliced Counts")
         plt.show()
 
+def plot_1_gene_arrows(vlm, gene_0 = 0, which_S = 'Sx_sz'):
+    if which_S == 'Sx_sz':
+        arrowprops = dict(
+            arrowstyle="->")
+        y = vlm.Sx_sz[gene_0]
+        x = [int(i) for i in vlm.ca['SampleID']]
+        fig, ax = plt.subplots()
+        scatter = ax.scatter(x,y, c=vlm.colorandum, label=vlm.colorandum)
+        legend1 = ax.legend(*scatter.legend_elements(),
+                            loc="upper right", title="Time points")
+        ax.add_artist(legend1)
+        for i in range(len(x)):
+            ax.annotate('',(x[i]+1,vlm.Sx_sz_t[gene_0][i]), (x[i],y[i]), arrowprops = arrowprops)
+        plt.xlabel(f"Gene {gene_0} Counts")
+        plt.xlabel(f"Time Points")
+        plt.title("One Gene Model Spliced Counts")
 
-## tSNE
-def plot_tsne(vlm, cluster_list = ['NE', 'NE-V1', 'NE-V2', 'NON-NE', 'NA']):
-    plt.figure(figsize=(10, 10))
-    vcy.scatter_viz(vlm.ts[:, 0], vlm.ts[:, 1], c=vlm.colorandum, s=2)
-    # for i in cluster_list:
-    #     ts_m = np.median(vlm.ts[vlm.ca["ClusterName"] == i, :], 0)
-    #     plt.text(ts_m[0], ts_m[1], str(vlm.cluster_labels[vlm.ca["ClusterName"] == i][0]),
-    #              fontsize=13, bbox={"facecolor": "w", "alpha": 0.6})
-    plt.show()
-    plt.axis("off")
+        plt.show()
+    elif which_S == 'Sx':
+        arrowprops = dict(
+            arrowstyle="->")
+        y = vlm.Sx[gene_0]
+        x = [int(i) for i in vlm.ca['SampleID']]
+        fig, ax = plt.subplots()
+        scatter = ax.scatter(x,y, c = vlm.colorandum, label = vlm.colorandum)
 
-## LDA
+        for i in range(len(x)):
+            ax.annotate('',(x[i]+1,vlm.Sx_t[gene_0][i]), (x[i],y[i]), arrowprops = arrowprops)
+            plt.tight_layout()
+        plt.xlabel(f"Gene {gene_0} Counts")
+        plt.xlabel(f"Time Points")
+        plt.title("One Gene Model Spliced Counts")
+        plt.show()
 
-## kMeans
 
 def plot_arrows(vlm,filename = "grid_arrows",type = "field", quiver_scale = 1.5, marker_overlay = None):
 
@@ -116,27 +135,39 @@ def minimal_yticks(start, end):
 def gaussian_kernel(X, mu = 0, sigma=1):
     return np.exp(-(X - mu)**2 / (2*sigma**2)) / np.sqrt(2*np.pi*sigma**2)
 
-def phase_portraits(vlm, gene_list = None, filter = False, by_minCorr = True, by_r2 = False, by_min_gamma = False):
-    print("Plotting phase portraits...")
-    if gene_list == None:
-        for i in vlm.ra['Gene']:
-            plt.figure()
-            vlm.plot_phase_portraits([i])
-            plt.savefig(f'phase_portrait_{i}.pdf')
-    else:
-        for i in gene_list:
-            plt.figure()
-            vlm.plot_phase_portraits([i])
-            plt.savefig(f'phase_portrait_{i}.pdf')
-    if filter == True:
-        print("Filter genes by phase portraits...")
-        if by_r2 == True:
-            vlm.filter_genes_by_phase_portrait(minR2 = 0.1, min_gamma = None, minCorr = None)
-        if by_min_gamma == True:
-            vlm.filter_genes_by_phase_portrait(minR2 = None, min_gamma= 0.1, minCorr=None)
-        if by_minCorr == True:
-            vlm.filter_genes_by_phase_portrait(minR2= None, min_gamma= None, minCorr = 0.1)
-    return vlm
+def _plot_phase_portrait_smg(vlm, gene, gs_i, which_S = 'Sx_sz'):
+        """Plot spliced-unspliced scatterplot resembling phase portrait
+        """
+        if gene is None:
+            plt.subplot(111)
+        else:
+            plt.subplot(gs_i)
+        ix = np.where(vlm.ra["Gene"] == gene)[0][0]
+        if which_S == 'Sx_sz':
+            scatter_viz(vlm.Sx_sz[ix, :], vlm.Ux_sz[ix, :], c=vlm.colorandum, s=5, alpha=0.4)
+            plt.title(gene)
+            xnew = np.linspace(0, vlm.Sx_sz[ix, :].max())
+            plt.plot(xnew, vlm.gammas[ix] * xnew + vlm.q[ix], c="k")
+        elif which_S == 'Sx':
+            scatter_viz(vlm.Sx[ix, :], vlm.Ux[ix, :], c=vlm.colorandum, s=5, alpha=0.4)
+            plt.title(gene)
+            xnew = np.linspace(0, vlm.Sx[ix, :].max())
+            plt.plot(xnew, vlm.gammas[ix] * xnew + vlm.q[ix], c="k")
+
+def plot_phase_portraits(vlm, genes, which_S = 'Sx_sz'):
+        """Plot spliced-unspliced scatterplots resembling phase portraits
+
+        Arguments
+        ---------
+        genes: List[str]
+            A list of gene symbols.
+        """
+        n = len(genes)
+        sqrtn = int(np.ceil(np.sqrt(n)))
+        gs = plt.GridSpec(sqrtn, int(np.ceil(n / sqrtn)))
+        for i, gn in enumerate(genes):
+            _plot_phase_portrait_smg(vlm,gn, gs[i], which_S)
+        plt.show()
 
 def plot_by_cluster(vlm, h =4, l = 3, cluster_list = (["NON-NE", "NE", "NE-V1", "NE-V2"]), type = 'int'):
 

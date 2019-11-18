@@ -6,18 +6,39 @@ from velocity_tools.visual_utils import *
 from matplotlib import cm
 ## Initialize variables for model
 indir = '/Users/sarahmaddox/Documents/workspace/rna_velocity/output'
+
+# m = "one_gene" # model type
+# tp = 6 # Number of timepoints
+# seed = 621008493 # seed used to generate fake data
+# N_cells = 10
+# multifactor = 1
+
+# m = "one_gene" # model type
+# tp = 6 # Number of timepoints
+# seed = 50119327 # seed used to generate fake data
+# N_cells = 100
+# multifactor = 1
+#
+# m = "two_gene" # model type
+# tp = 6 # Number of timepoints
+# seed = 93922959 # seed used to generate fake data
+# N_cells = 20
+# multifactor = 100
+
 m = "two_gene" # model type
 tp = 6 # Number of timepoints
-seed = 93922959 # seed used to generate fake data
-N_cells = 20
+seed = 13585376 # seed used to generate fake data
+N_cells = 50
+multifactor = 100
 
 ################################################################################################################
 # 0. Import data
 
 ##Convert data from model to loom file and read loom as VelocytoLoom
-data2loom(indir,model = m,timepoints=tp,seed = seed, N_cells = N_cells, multfactor=100)
+data2loom(indir,model = m,timepoints=tp,seed = seed, N_cells = N_cells, multfactor=multifactor)
 vlm = import_loom(op.join(indir,f"{m}/{seed}.loom"))
 
+# vlm.filter_cells(vlm.ca['SampleID'] == '1')
 ################################################################################################################
 # 1. Normalize data and perform PCA: input .U, .S --> .U_norm, .S_norm, .U_sz, .S_sz, .pca (using .S_norm which is
 # log_transformed, unlike .S_sz)
@@ -30,19 +51,19 @@ plt.figure()
 plot_fractions(vlm)
 plt.show()
 
-vlm.normalize("S", size=True, log=True)
-vlm.normalize("U", size=True,  log=True)
+vlm._normalize_S()
+vlm._normalize_U()
 
-PCA(vlm, n_components=2, pick_cutoff=False)
+PCA(vlm, n_components=1, pick_cutoff=False)
 
 ################################################################################################################
 # 2. knn imputation and gamma fit
 #If knn == False, the below function just sets Sx= S and Ux = U for future functions
-# .U, .S, .Ux_sz, .Sx_sz set equal to .U, .S, .U_sz, .S_sz
-vlm = knn_impute(vlm, n_comps=2, knn = False, normalized=False)
+# .Ux, .Sx, .Ux_sz, .Sx_sz set equal to .U, .S, .U_sz, .S_sz
+vlm = knn_impute(vlm, n_comps=1, knn = False, normalized=True)
 
 # Uses fake-imputed, normalized data .Sx_sz, .Us_sz to fit gamma, q, and R2
-vlm.fit_gammas(use_imputed_data=True, use_size_norm=False, weighted=False)
+vlm.fit_gammas(use_imputed_data=True, use_size_norm=True, weighted=False, fit_offset=False)
 
 ################################################################################################################
 # 4. Velocity estimation
@@ -59,7 +80,7 @@ vlm.set_clusters(vlm.ca['SampleID'], colormap=cm.get_cmap('Set2'))
 ################################################################################################################
 #5. Extrapolation at time t
 # Creates delta_S = The variation in gene expression and Sx_sz_t = extrapolated data at time t
-delta_t=.1
+delta_t=.5
 
 vlm.calculate_shift(assumption = 'constant_velocity') # Only Sx_sz or Sx are implemented in velocyto
 vlm.extrapolate_cell_at_t(delta_t=delta_t) # Only Sx_sz or Sx are implemented in velocyto
@@ -67,6 +88,6 @@ vlm.extrapolate_cell_at_t(delta_t=delta_t) # Only Sx_sz or Sx are implemented in
 ################################################################################################################
 # 6. Plotting data
 plot_2_gene_arrows(vlm, which_S="Sx")
-
-vel = pd.DataFrame(vlm.velocity, index = vlm.ra['Gene'], columns = vlm.ca['CellID'])
-vel.to_csv(f"{indir}/{m}/vel_{seed}_deltat_{delta_t}.csv")
+# vel = pd.DataFrame(vlm.velocity, index = vlm.ra['Gene'], columns = vlm.ca['CellID'])
+# vel.to_csv(f"{indir}/{m}/vel_{seed}_deltat_{delta_t}.csv")
+plot_phase_portraits(vlm, genes=['gene_0', 'gene_1'], which_S='Sx')
