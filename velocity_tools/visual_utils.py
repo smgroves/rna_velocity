@@ -4,16 +4,17 @@ import velocyto as vcy
 
 
 ## Plot in original dimensions (for low-dimensional data)
-def plot_original_arrows(vlm, gene_0 = 0,gene_1 = 1):
-    arrowprops = dict(
-        arrowstyle="->")
-    x = vlm.Sx[gene_0]
-    y = vlm.Sx[gene_1]
-    fig, ax = plt.subplots()
-    ax.scatter(x,y, c = vlm.colorandum)
-    for i in range(len(x)):
-        ax.annotate('',(vlm.Sx_t[gene_0][i],vlm.Sx_t[gene_1][i]), (x[i],y[i]), arrowprops = arrowprops)
-    plt.show()
+def plot_original_arrows(vlm, gene_0 = 0,gene_1 = 1, which_S = 'Sx_sz'):
+    if which_S == 'Sx_sz':
+        arrowprops = dict(
+            arrowstyle="->")
+        x = vlm.Sx_sz[gene_0]
+        y = vlm.Sx_sz[gene_1]
+        fig, ax = plt.subplots()
+        ax.scatter(x,y, c = vlm.colorandum)
+        for i in range(len(x)):
+            ax.annotate('',(vlm.Sx_sz_t[gene_0][i],vlm.Sx_sz_t[gene_1][i]), (x[i],y[i]), arrowprops = arrowprops)
+        plt.show()
 ## UMAP
 
 ## tSNE

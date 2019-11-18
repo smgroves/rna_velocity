@@ -12,7 +12,25 @@ import rpy2.robjects as robj
 from rpy2.robjects.packages import importr
 
 def data2loom(indir, model, timepoints = 2, seed = 0, N_cells = 20, delim = ',', multfactor = 1):
-    #Indir is directory path to output folder
+    '''
+    :param indir: directory where "output" folder is
+    :param model: one_gene, two_gene
+    :param timepoints:  number of timepoints
+            Default = 2
+    :param seed: random seed used to generate fake data (in the name of the fake data files)
+            Default = 0
+    :param N_cells: number of fake cells for which data was generated
+            Default = 20
+    :param delim: delimiter in fake data file
+            Default = ','
+    :param multfactor: multiplicative factor for CME models, which output concentration, to generate "counts" data
+            Default = 100
+    :return: Nothing, but generates a file {seed}.loom in the model folder with the characteristics
+            layers: X (spliced + unspliced counts), spliced, unspliced, ambiguous (currently 0s matrix)
+            ra: Genes
+            ca: CellID and SampleID (timepoint)
+    '''
+
     # model is one_gene, two_gene, etc.
     #timepoint is a single number, starting at 0 for first timepoint
     datas = pd.DataFrame()
@@ -20,7 +38,7 @@ def data2loom(indir, model, timepoints = 2, seed = 0, N_cells = 20, delim = ',',
     time = []
     for timepoint in range(timepoints):
         read_dir = f"{indir}/{model}/time_{str(timepoint)}"
-        print("Data should have rows = genes, columns = cells, for a single timepoint.")
+        print("Data should have rows = genes and columns = cells.")
         tmp_datas = pd.read_csv(op.join(read_dir, f's_{N_cells}_cells_{seed}.csv'), index_col=0, header=0,
                               delimiter=delim)
         tmp_datau = pd.read_csv(op.join(read_dir, f'u_{N_cells}_cells_{seed}.csv'), index_col=0, header=0,
@@ -49,7 +67,7 @@ def data2loom(indir, model, timepoints = 2, seed = 0, N_cells = 20, delim = ',',
     try:
         ds = loompy.create(op.join(read_dir,filename), total, ra, ca)
 
-        for layer_name, matrix in zip(['S','U'], [datas,datau]):
+        for layer_name, matrix in zip(['spliced','unspliced'], [datas,datau]):
             ds.set_layer(name=layer_name, matrix=matrix, dtype='float32')
         ds.attrs["velocyto.__version__"] = vcy.__version__
         ds.attrs["velocyto.logic"] = 'Default'
@@ -68,6 +86,10 @@ def data2loom(indir, model, timepoints = 2, seed = 0, N_cells = 20, delim = ',',
                       file_attrs={"velocyto.__version__": vcy.__version__, "velocyto.logic": 'Default'})
 
 def import_loom(loom):
+    '''
+    :param loom: name of loom file to import with full path specified
+    :return: vlm, a VelocytoLoom object
+    '''
     print('Importing loom file...')
     vlm = vcy.VelocytoLoom(loom)
     print("Column attributes:", vlm.ca.keys())
@@ -75,7 +97,7 @@ def import_loom(loom):
     print("Spliced shape:", vlm.S.shape, "Unspliced shape:", vlm.U.shape)
     return vlm
 
-def plot_fractions(self, save2file: str = None) -> None:
+def plot_fractions(vlm, save2file: str = None):
     """Plots a barplot showing the abundance of spliced/unspliced molecules in the dataset
     Arguments
     ---------
@@ -115,91 +137,41 @@ def plot_fractions(self, save2file: str = None) -> None:
     if save2file:
         plt.savefig(save2file, bbox_inches="tight")
 
-def velocyto_qc(vlm, threshold = .5, min_counts = 40, min_cells = 30, num_cells = [5000,10000]):
-
-    print("Quality Control of loom file from velocyto...")
-    # print("...Removing cells with extremely low unspliced counts < %f percent"%threshold)
-    # print("... below: ", np.percentile(vlm.initial_Ucell_size, threshold))
-    # vlm.filter_cells(bool_array=vlm.initial_Ucell_size > np.percentile(vlm.initial_Ucell_size, threshold))
-
-    print("Plotting U/S fractions...")
-    plt.figure()
-    vlm.plot_fractions()
-    plt.show()
-
-    vlm.score_detection_levels(min_expr_counts=min_counts, min_cells_express=min_cells)
-    print(f"...Number of genes with < {min_counts} counts and expressed in < {min_cells} cells:", sum(vlm.detection_level_selected))
-    print(colored("...Remove these genes with filter_genes(by_detection_levels=True)", "blue"))
-
-    for x in num_cells:
-        plt.figure()
-        plt.title("Score by CV vs mean, num_cells_to_keep = " + str(x))
-        vlm.score_cv_vs_mean(x, plot=True, max_expr_avg=35)
-        plt.show()
-
-    print(colored("...Filter genes by score with filter_genes(by_cv_vs_mean=True)", "blue"))
-    print("...Spliced shape:", vlm.S.shape, "Unspliced shape:", vlm.U.shape)
-
-    return vlm
-
-def filter_cells(vlm, bool_arr):
-    print("Filtering cells by boolean vector...")
-    vlm.filter_cells(bool_arr)
-    return vlm
-
-# num_cells is how many cells to choose from cv vs mean plot based on genes
-def filter_by_genes(vlm, num_cells = 7000, ftype = "all"):
-
-    if ftype == "detection":
-        print("Filtering genes by detection...")
-        vlm.filter_genes(by_detection_levels=True)
-    if ftype == "score":
-        print("Filtering genes by score...")
-        vlm.score_cv_vs_mean(num_cells, plot=True, max_expr_avg=35)
-        vlm.filter_genes(by_cv_vs_mean=True)
-    if ftype == "all":
-        print("Filtering genes by detection...")
-        vlm.filter_genes(by_detection_levels=True)
-        print("Filtering genes by score...")
-        vlm.score_cv_vs_mean(num_cells, plot=True, max_expr_avg=35)
-        vlm.filter_genes(by_cv_vs_mean=True)
-    print(colored("...if filtering genes by phase portrait, try phase_portraits(vlm).", "blue"))
-    return vlm
-
-def norm_vlm(vlm):
-    print("Normalizing S and U by relative size...")
-    vlm._normalize_S(relative_size=vlm.S.sum(0), target_size=vlm.S.sum(0).mean(), log = True)
-    vlm._normalize_U(relative_size=vlm.U.sum(0), target_size=vlm.U.sum(0).mean(), log = True)
-    return vlm
-
-def gamma_fit(vlm, pca = True, n_components = 100, knn = True, pick_cutoff = True, use_imputed_data = False,
-              use_size_norm = True, weighted = False, b_sight = 100, k = 50, balanced = True):
+def PCA(vlm, n_components, pick_cutoff = True):
     print('...Performing PCA')
     vlm.perform_PCA(n_components=n_components)
-    print("Fitting gamma (degradation rate) parameter (~ u/s at steady state)...")
-    # plt.figure()
-    # plt.plot(np.cumsum(vlm.pca.explained_variance_ratio_)[:100])
-    # try:
-    #     n_comps = np.where(np.diff(np.diff(np.cumsum(vlm.pca.explained_variance_ratio_))>0.002))[0][0]
-    # except IndexError: n_comps = n_components
-    # plt.axvline(n_comps, c="k")
-    # plt.show()
-    #variable: change the 0.002 below to reflect where to cut off the pca; 0.002 is the minimum difference
-    #you want when adding another PC dimension; lower = more dimensions; higher = fewer dimensions = less noise
     if pick_cutoff == True:
+        plt.figure()
+        plt.plot(np.cumsum(vlm.pca.explained_variance_ratio_)[:100])
+        try:
+            n_comps = np.where(np.diff(np.diff(np.cumsum(vlm.pca.explained_variance_ratio_))>0.002))[0][0]
+        except IndexError: n_comps = n_components
+        plt.axvline(n_comps, c="k")
+        plt.show()
+        # variable: change the 0.002 below to reflect where to cut off the pca; 0.002 is the minimum difference
+        # you want when adding another PC dimension; lower = more dimensions; higher = fewer dimensions = less noise
         co = input("Input cutoff for change in cumulative explained variance; default is 0.002")
         n_comps = np.where(np.diff(np.diff(np.cumsum(vlm.pca.explained_variance_ratio_))>float(co)))[0][0]
         plt.figure()
         plt.plot(np.cumsum(vlm.pca.explained_variance_ratio_)[:100])
         plt.axvline(n_comps, c="k")
         plt.show()
+    return vlm
+
+def knn_impute(vlm, n_comps = 100, knn = True, b_sight = 100, k = 50, balanced = True, normalized = True):
+    print("Fitting gamma (degradation rate) parameter (~ u/s at steady state)...")
     if knn == True:
         print('...performing kNN imputation (runs slowly)')
         if balanced == True:
             vlm.knn_imputation(n_pca_dims=n_comps, k=k, balanced=True, b_sight=b_sight, b_maxl=1500, n_jobs=16)
         else:
             vlm.knn_imputation(n_pca_dims=n_comps, k = k)
-    vlm.fit_gammas(use_imputed_data=use_imputed_data, use_size_norm=use_size_norm, weighted=weighted)
+    else:
+        vlm.Sx = vlm.S
+        vlm.Ux = vlm.U
+        if normalized == True:
+            vlm.Sx_sz = vlm.S_sz
+            vlm.Ux_sz = vlm.U_sz
     return vlm
 
 def fit_transform_clust(vlm, fit_type = "UMAP", clust = False, n_clust = 4):
