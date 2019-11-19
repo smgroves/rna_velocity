@@ -4,7 +4,7 @@ import velocyto as vcy
 from velocyto.analysis import scatter_viz
 
 ## Plot in original dimensions (for low-dimensional data)
-def plot_2_gene_arrows(vlm, gene_0 = 0,gene_1 = 1, which_S = 'Sx_sz'):
+def plot_2_gene_arrows(vlm, gene_0 = 0,gene_1 = 1, which_S = 'Sx_sz', plot_ss = False):
     if which_S == 'Sx_sz':
         arrowprops = dict(
             arrowstyle="->")
@@ -21,7 +21,6 @@ def plot_2_gene_arrows(vlm, gene_0 = 0,gene_1 = 1, which_S = 'Sx_sz'):
         plt.xlabel(f"Gene {gene_1} Counts")
         plt.title("Two Gene Model Spliced Counts")
 
-        plt.show()
     elif which_S == 'Sx':
         arrowprops = dict(
             arrowstyle="->")
@@ -36,7 +35,8 @@ def plot_2_gene_arrows(vlm, gene_0 = 0,gene_1 = 1, which_S = 'Sx_sz'):
         plt.xlabel(f"Gene {gene_0} Counts")
         plt.xlabel(f"Gene {gene_1} Counts")
         plt.title("Two Gene Model Spliced Counts")
-        plt.show()
+
+    plt.show()
 
 def plot_1_gene_arrows(vlm, gene_0 = 0, which_S = 'Sx_sz'):
     if which_S == 'Sx_sz':
@@ -104,36 +104,6 @@ def plot_arrows(vlm,filename = "grid_arrows",type = "field", quiver_scale = 1.5,
         plt.savefig(f'{filename}.pdf')
 
 
-
-
-    # plotting utility functions
-def despline():
-    ax1 = plt.gca()
-    # Hide the right and top spines
-    ax1.spines['right'].set_visible(False)
-    ax1.spines['top'].set_visible(False)
-    # Only show ticks on the left and bottom spines
-    ax1.yaxis.set_ticks_position('left')
-    ax1.xaxis.set_ticks_position('bottom')
-
-
-def minimal_xticks(start, end):
-    end_ = np.around(end, -int(np.log10(end)) + 1)
-    xlims = np.linspace(start, end_, 5)
-    xlims_tx = [""] * len(xlims)
-    xlims_tx[0], xlims_tx[-1] = f"{xlims[0]:.0f}", f"{xlims[-1]:.02f}"
-    plt.xticks(xlims, xlims_tx)
-
-
-def minimal_yticks(start, end):
-    end_ = np.around(end, -int(np.log10(end)) + 1)
-    ylims = np.linspace(start, end_, 5)
-    ylims_tx = [""] * len(ylims)
-    ylims_tx[0], ylims_tx[-1] = f"{ylims[0]:.0f}", f"{ylims[-1]:.02f}"
-    plt.yticks(ylims, ylims_tx)
-
-def gaussian_kernel(X, mu = 0, sigma=1):
-    return np.exp(-(X - mu)**2 / (2*sigma**2)) / np.sqrt(2*np.pi*sigma**2)
 
 def _plot_phase_portrait_smg(vlm, gene, gs_i, which_S = 'Sx_sz'):
         """Plot spliced-unspliced scatterplot resembling phase portrait
@@ -229,3 +199,69 @@ def plot_multigenes(glist, vlm):
     plt.tight_layout()
     plt.show()
 
+
+def average_vel_per_cluster(vlm, embed = True):
+    if embed == True:
+        magnitude_embed = []
+        for i in range(len(vlm.delta_embedding[:, 1])):
+            magnitude_embed.append(np.linalg.norm(vlm.delta_embedding[i, 1:10]))
+    else:
+        magnitude_vec = []
+        for i in range(len(vlm.delta_S[0])):
+            magnitude_vec.append(np.linalg.norm(vlm.delta_S[:, i]))
+    # calculate average velocity for each cluster
+    ave_vel = []
+    for q in list(len(vlm.embedding[:, 0] + 1)):
+        ind = [i for i, x in enumerate(vlm.cluster_labels == str(q)) if x]
+        ave_vel.append(np.average([magnitude_embed[x] for x in ind]))
+
+    col_ave_vel = []
+    for i in range(len(vlm.embedding[:, 0] + 1)):
+        cl = int(vlm.cluster_labels[i])
+        col_ave_vel.append(ave_vel[cl])
+    #plot
+    plt.figure(None, (9, 9))
+    ax = plt.scatter(vlm.embedding[:, 0], vlm.embedding[:, 1],
+                     c=col_ave_vel, cmap='RdBu', alpha=0.5, s=20, lw=0,
+                     edgecolor='', rasterized=True)
+
+    for i in range(max(vlm.ca["Clusters"]) + 1):
+        pc_m = np.median(vlm.pcs[[x == str(i) for x in vlm.cluster_labels], :], 0)
+        plt.text(pc_m[0], pc_m[1], str(vlm.cluster_labels[[x == str(i) for x in vlm.cluster_labels]][0]),
+                 fontsize=13, bbox={"facecolor": "w", "alpha": 0.6})
+    plt.axis("off")
+    cbar = plt.colorbar(ax)
+    cbar.ax.set_yticks(ave_vel, fontsize=8)
+    plt.show()
+    return col_ave_vel
+
+#######################################################################################################################
+# Plotting utility functions
+
+def despline():
+    ax1 = plt.gca()
+    # Hide the right and top spines
+    ax1.spines['right'].set_visible(False)
+    ax1.spines['top'].set_visible(False)
+    # Only show ticks on the left and bottom spines
+    ax1.yaxis.set_ticks_position('left')
+    ax1.xaxis.set_ticks_position('bottom')
+
+
+def minimal_xticks(start, end):
+    end_ = np.around(end, -int(np.log10(end)) + 1)
+    xlims = np.linspace(start, end_, 5)
+    xlims_tx = [""] * len(xlims)
+    xlims_tx[0], xlims_tx[-1] = f"{xlims[0]:.0f}", f"{xlims[-1]:.02f}"
+    plt.xticks(xlims, xlims_tx)
+
+
+def minimal_yticks(start, end):
+    end_ = np.around(end, -int(np.log10(end)) + 1)
+    ylims = np.linspace(start, end_, 5)
+    ylims_tx = [""] * len(ylims)
+    ylims_tx[0], ylims_tx[-1] = f"{ylims[0]:.0f}", f"{ylims[-1]:.02f}"
+    plt.yticks(ylims, ylims_tx)
+
+def gaussian_kernel(X, mu = 0, sigma=1):
+    return np.exp(-(X - mu)**2 / (2*sigma**2)) / np.sqrt(2*np.pi*sigma**2)

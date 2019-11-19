@@ -6,8 +6,8 @@ Created on Tue Nov  5 19:21:02 2019
 """
 import numpy as np
 
-from model_parameters import ds_x, dp_x, kp_x, beta_x
-from model_parameters import ds_y, dp_y, kp_y, beta_y
+from model_files.model_parameters import ds_x, dp_x, kp_x, beta_x
+from model_files.model_parameters import ds_y, dp_y, kp_y, beta_y
 
 from choose_model_here import p_x0, p_y0
 

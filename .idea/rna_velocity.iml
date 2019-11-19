@@ -6,6 +6,9 @@
       <sourceFolder url="file://$MODULE_DIR$/1_gene_matrix_calculator/simulation_files" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/1_gene_matrix_calculator" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/2_gene_matrix_calculator" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/2_gene_matrix_calculator/model_files" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/2_gene_matrix_calculator/simulation_files" isTestSource="false" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.7 (py37)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
