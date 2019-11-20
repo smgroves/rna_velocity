@@ -72,6 +72,13 @@ def plot_1_gene_arrows(vlm, gene_0 = 0, which_S = 'Sx_sz'):
         plt.title("One Gene Model Spliced Counts")
         plt.show()
 
+def hist_last_tp(vlm, gene_0, tp = None):
+        if tp == None: last_tp = vlm.Sx[gene_0]
+        else:
+            last_tp = vlm.Sx[gene_0][vlm.ca['SampleID'] == tp]
+        plt.figure()
+        plt.hist(x = last_tp, bins = 50)
+        plt.show()
 
 def plot_arrows(vlm,filename = "grid_arrows",type = "field", quiver_scale = 1.5, marker_overlay = None):
 

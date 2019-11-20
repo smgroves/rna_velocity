@@ -13,23 +13,23 @@ indir = '/Users/sarahmaddox/Documents/workspace/rna_velocity/output'
 # N_cells = 10
 # multifactor = 1
 
-# m = "one_gene" # model type
-# tp = 6 # Number of timepoints
-# seed = 50119327 # seed used to generate fake data
-# N_cells = 100
-# multifactor = 1
-#
+m = "one_gene" # model type
+tp = 6 # Number of timepoints
+seed = 50119327 # seed used to generate fake data
+N_cells = 100
+multifactor = 1
+
 # m = "two_gene" # model type
 # tp = 6 # Number of timepoints
 # seed = 93922959 # seed used to generate fake data
 # N_cells = 20
 # multifactor = 100
-
-m = "two_gene" # model type
-tp = 6 # Number of timepoints
-seed = 13585376 # seed used to generate fake data
-N_cells = 50
-multifactor = 100
+#
+# m = "two_gene" # model type
+# tp = 20 # Number of timepoints
+# seed = 335410403 # seed used to generate fake data
+# N_cells = 20
+# multifactor = 1000
 
 ################################################################################################################
 ''' 0. Import data '''
@@ -38,7 +38,7 @@ data2loom(indir,model = m,timepoints=tp,seed = seed, N_cells = N_cells, multfact
 vlm = import_loom(op.join(indir,f"{m}/{seed}.loom"))
 
 # If you want to do the calculation on only one timepoint, use filter_cells to choose that timepoint.
-vlm.filter_cells(vlm.ca['SampleID'] == '1')
+# vlm.filter_cells(vlm.ca['SampleID'] == '1')
 
 ################################################################################################################
 '''1. Normalize data and perform PCA: input .U, .S --> .U_norm, .S_norm, .U_sz, .S_sz, .pca, .pcs
@@ -46,11 +46,11 @@ vlm.filter_cells(vlm.ca['SampleID'] == '1')
 ## Plot_fractions from velocyto_utils, which is an edit of the function originally from Velocyto to make it usable
 # for fake data
 
-print("Plotting U/S fractions...")
+# print("Plotting U/S fractions...")
 plt.figure()
 plot_fractions(vlm)
 plt.show()
-
+#
 vlm._normalize_S()
 vlm._normalize_U()
 
@@ -71,7 +71,7 @@ vlm = knn_impute(vlm, n_comps=1, knn = False, normalized=True)
 # weight= minmax_diag, which only uses the upper and lower percentiles to calculate gamma (assumed to be at steady
 # state) [found in velocyto.estimation module]
 
-vlm.fit_gammas(use_imputed_data=True, use_size_norm=True, weighted=False, fit_offset=False)
+vlm.fit_gammas(use_imputed_data=True, use_size_norm=False, weighted=False, fit_offset=False)
 
 ################################################################################################################
 '''3. Velocity estimation'''
@@ -80,29 +80,29 @@ vlm.fit_gammas(use_imputed_data=True, use_size_norm=True, weighted=False, fit_of
 vlm.predict_U(which_S="Sx")
 vlm.calculate_velocity() # Only Sx_sz or Sx are implemented in velocyto
 
-# print(colored("...saving hdf5 file as vlm", "blue"))
-# vlm.to_hdf5(f"{seed}")
+print(colored("...saving hdf5 file as vlm", "blue"))
+vlm.to_hdf5(f"{seed}")
 
-vlm.set_clusters(vlm.ca['SampleID'], colormap=cm.get_cmap('Set2'))
+vlm.set_clusters(vlm.ca['SampleID'], colormap=cm.get_cmap('tab20b'))
 
 ################################################################################################################
 '''4. Extrapolation at time t'''
 # Creates delta_S = The variation in gene expression and Sx_sz_t = extrapolated data at time t
-delta_t=.5
+delta_t=1
 
 vlm.calculate_shift(assumption = 'constant_velocity') # Only Sx_sz or Sx are implemented in velocyto
 vlm.extrapolate_cell_at_t(delta_t=delta_t) # Only Sx_sz or Sx are implemented in velocyto
 
 ################################################################################################################
 '''5. Plotting data'''
-plot_2_gene_arrows(vlm, which_S="Sx")
+plot_1_gene_arrows(vlm, which_S="Sx")
 # vel = pd.DataFrame(vlm.velocity, index = vlm.ra['Gene'], columns = vlm.ca['CellID'])
 # vel.to_csv(f"{indir}/{m}/vel_{seed}_deltat_{delta_t}.csv")
-plot_phase_portraits(vlm, genes=['gene_0', 'gene_1'], which_S='Sx')
+plot_phase_portraits(vlm, genes=['gene_0'], which_S='Sx')
 
 ################################################################################################################
 '''6. Use velocity to calculate transition probabilities and transition matrix'''
 # estimate_transition_prob:
 # Use cosine correlation to estimate transition probabilities for every cells to its embedding neighborhood
 
-vlm.estimate_transition_prob()
+# vlm.estimate_transition_prob()
