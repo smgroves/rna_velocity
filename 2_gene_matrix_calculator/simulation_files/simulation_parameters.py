@@ -27,8 +27,8 @@ s_x0, s_y0 = (beta_x/ds_x)*u_x0, (beta_y/ds_y)*u_y0
 # y0 = [u_y0, s_y0, p_y0]
 
 # Updated: starting at a different state
-x0 = [.1*u_x0, .5*s_x0, 0*p_x0]
-y0 = [.5*u_y0, .1*s_y0, 0*p_y0]
+x0 = [.1*u_x0, 2*s_x0, 0*p_x0]
+y0 = [.1*u_y0, 2*s_y0, 0*p_y0]
 
 t0 = 0
 tf = 80

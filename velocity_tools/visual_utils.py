@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import velocyto as vcy
 from velocyto.analysis import scatter_viz
-
+import seaborn as sns
 ## Plot in original dimensions (for low-dimensional data)
 def plot_2_gene_arrows(vlm, gene_0 = 0,gene_1 = 1, which_S = 'Sx_sz', plot_ss = False):
     if which_S == 'Sx_sz':
@@ -146,101 +146,21 @@ def plot_phase_portraits(vlm, genes, which_S = 'Sx_sz'):
             _plot_phase_portrait_smg(vlm,gn, gs[i], which_S)
         plt.show()
 
-def plot_by_cluster(vlm, h =4, l = 3, cluster_list = (["NON-NE", "NE", "NE-V1", "NE-V2"]), type = 'int'):
-
-    plt.figure(None, (14, 14))
-    gs = plt.GridSpec(h, l)
-    for i, t in enumerate(range(max(vlm.ca["Clusters"]) + 1)):
-        quiver_scale = 2.5
-        if type == 'int':
-            q = vlm.cluster_labels == str(t)
-            treat_index = [i for i, x in enumerate(q) if x]
-        if type == 'str':
-            treat_index = np.where(vlm.ca['Clusters'] == str(t))[0]
-        treat_index = np.random.choice(treat_index, size=len(treat_index), replace=False)
-
+def plot_distr_over_time(vlm, attractors, gene_0 = 0, gene_1 = 1):
+    tps = vlm.ca['SampleID']
+    sqrtn = int(np.ceil(np.sqrt(len(np.unique(tps)))))
+    fig = plt.figure(figsize=(20,20))
+    gs = plt.GridSpec(sqrtn, int(np.ceil(len(np.unique(tps)) / sqrtn)))
+    for i, tp in enumerate(np.unique(tps)):
+        x_sub = vlm.Sx[gene_0][vlm.ca['SampleID'] == tp]
+        y_sub = vlm.Sx[gene_1][vlm.ca['SampleID'] == tp]
         plt.subplot(gs[i])
-        plt.title(t, size='xx-large')
-
-        plt.scatter(vlm.embedding[:, 0], vlm.embedding[:, 1], c="k", alpha=0.2, s=2, edgecolor="")
-
-        ix_choice = np.random.choice(vlm.embedding.shape[0], size=int(vlm.embedding.shape[0] / 1.), replace=False)
-        quiver_kwargs = dict(headaxislength=20, headlength=20, headwidth=20, linewidths=0.25, width=0.00045,
-                             edgecolors="k",
-                             color=vlm.colorandum[treat_index], alpha=0.7)
-        plt.quiver(vlm.embedding[treat_index, 0], vlm.embedding[treat_index, 1],
-                   vlm.delta_embedding[treat_index, 0], vlm.delta_embedding[treat_index, 1],
-                   scale=quiver_scale, **quiver_kwargs)
-
-    plt.tight_layout()
-    plt.tight_layout()
-    plt.savefig("clusterplot.pdf")
-
-
-# vlm must have Sx_sz attribute and cluster_labels that are colored before running!
-def plot_multigenes(glist, vlm):
-    plt.figure(None, (17, 18), dpi=300)
-    gs = plt.GridSpec(6, 6)
-    for i, gn in enumerate(glist):
-        print(gn)
-        ax = plt.subplot(gs[i * 3])
-        try:
-            ix = np.where(vlm.ra["Gene"] == gn)[0][0]
-            print(ix)
-        except:
-            continue
-        vcy.scatter_viz(vlm.Sx_sz[ix, :], vlm.Ux_sz[ix, :], c=vlm.colorandum, s=5, alpha=0.4, rasterized=True)
-        plt.title(gn)
-        xnew = np.linspace(0, vlm.Sx[ix, :].max())
-        plt.plot(xnew, vlm.gammas[ix] * xnew + vlm.q[ix], c="k")
-        plt.ylim(0, np.max(vlm.Ux_sz[ix, :]) * 1.02)
-        plt.xlim(0, np.max(vlm.Sx_sz[ix, :]) * 1.02)
-        minimal_yticks(0, np.max(vlm.Ux_sz[ix, :]) * 1.02)
-        minimal_xticks(0, np.max(vlm.Sx_sz[ix, :]) * 1.02)
-        despline()
-
-        vlm.plot_velocity_as_color(gene_name=gn, gs=gs[i * 3 + 1], s=3, rasterized=True, which_tsne='embedding')
-
-        vlm.plot_expression_as_color(gene_name=gn, gs=gs[i * 3 + 2], s=3, rasterized=True, which_tsne='embedding')
-
-    plt.tight_layout()
+        sns.kdeplot(data=x_sub, data2=y_sub, shade=True, shade_lowest=False, cmap = 'Blues')
+        plt.scatter(x = x_sub, y = y_sub, c="w", s=30, linewidth=1, marker="+")
+        plt.scatter(x = attractors[0], y = attractors[1], c="r", s=50, linewidth=3, marker="+")
+        plt.xlim([-1, np.max(vlm.Sx[gene_0])])
+        plt.ylim([-1, np.max(vlm.Sx[gene_1])])
     plt.show()
-
-
-def average_vel_per_cluster(vlm, embed = True):
-    if embed == True:
-        magnitude_embed = []
-        for i in range(len(vlm.delta_embedding[:, 1])):
-            magnitude_embed.append(np.linalg.norm(vlm.delta_embedding[i, 1:10]))
-    else:
-        magnitude_vec = []
-        for i in range(len(vlm.delta_S[0])):
-            magnitude_vec.append(np.linalg.norm(vlm.delta_S[:, i]))
-    # calculate average velocity for each cluster
-    ave_vel = []
-    for q in list(len(vlm.embedding[:, 0] + 1)):
-        ind = [i for i, x in enumerate(vlm.cluster_labels == str(q)) if x]
-        ave_vel.append(np.average([magnitude_embed[x] for x in ind]))
-
-    col_ave_vel = []
-    for i in range(len(vlm.embedding[:, 0] + 1)):
-        cl = int(vlm.cluster_labels[i])
-        col_ave_vel.append(ave_vel[cl])
-    #plot
-    plt.figure(None, (9, 9))
-    ax = plt.scatter(vlm.embedding[:, 0], vlm.embedding[:, 1],
-                     c=col_ave_vel, cmap='RdBu', alpha=0.5, s=20, lw=0,
-                     edgecolor='', rasterized=True)
-
-    for i in range(max(vlm.ca["Clusters"]) + 1):
-        pc_m = np.median(vlm.pcs[[x == str(i) for x in vlm.cluster_labels], :], 0)
-        plt.text(pc_m[0], pc_m[1], str(vlm.cluster_labels[[x == str(i) for x in vlm.cluster_labels]][0]),
-                 fontsize=13, bbox={"facecolor": "w", "alpha": 0.6})
-    plt.axis("off")
-    cbar = plt.colorbar(ax)
-    cbar.ax.set_yticks(ave_vel, fontsize=8)
-    plt.show()
-    return col_ave_vel
 
 #######################################################################################################################
 # Plotting utility functions

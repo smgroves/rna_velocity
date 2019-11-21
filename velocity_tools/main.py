@@ -23,18 +23,18 @@ indir = '/Users/sarahmaddox/Documents/workspace/rna_velocity/output'
 # tp = 6 # Number of timepoints
 # seed = 93922959 # seed used to generate fake data
 # N_cells = 20
-# multifactor = 100
+# multifactor = 1
 #
 # m = "two_gene" # model type
 # tp = 20 # Number of timepoints
 # seed = 335410403 # seed used to generate fake data
 # N_cells = 20
-# multifactor = 1000
-
+# multifactor = 1
+#
 m = "two_gene" # model type
-tp = 30 # Number of timepoints
-seed = 872531592 # seed used to generate fake data
-N_cells = 20
+tp = 4 # Number of timepoints
+seed = 761358175 # seed used to generate fake data
+N_cells = 500
 multifactor = 1
 
 ################################################################################################################
@@ -53,9 +53,9 @@ vlm = import_loom(op.join(indir,f"{m}/{seed}.loom"))
 # for fake data
 
 # print("Plotting U/S fractions...")
-plt.figure()
-plot_fractions(vlm)
-plt.show()
+# plt.figure()
+# plot_fractions(vlm)
+# plt.show()
 
 vlm._normalize_S()
 vlm._normalize_U()
@@ -99,10 +99,13 @@ vlm.extrapolate_cell_at_t(delta_t=delta_t) # Only Sx_sz or Sx are implemented in
 
 ################################################################################################################
 '''5. Plotting data'''
-plot_2_gene_arrows(vlm, which_S="Sx")
+# plot_2_gene_arrows(vlm, which_S="Sx")
 vel = pd.DataFrame(vlm.velocity, index = vlm.ra['Gene'], columns = vlm.ca['CellID'])
 vel.to_csv(f"{indir}/{m}/vel_{seed}_deltat_{delta_t}.csv")
-plot_phase_portraits(vlm, genes=['gene_0', 'gene_1'], which_S='Sx')
+# plot_phase_portraits(vlm, genes=['gene_0', 'gene_1'], which_S='Sx')
+
+#attractor states are written as [[x1, x2], [y1,y2] for two attractors
+plot_distr_over_time(vlm, attractors=[0.7494341170382606, 0.35890619161456505]) #for 2 genes
 
 ################################################################################################################
 '''6. Use velocity to calculate transition probabilities and transition matrix'''

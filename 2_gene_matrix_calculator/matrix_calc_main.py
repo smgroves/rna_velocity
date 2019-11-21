@@ -22,7 +22,8 @@ from network_utils import save_data
 outdir= '/Users/sarahmaddox/Documents/workspace/rna_velocity/output/'
 import random
 # ============================================================================================
-seed = random.randint(0, 1000000000)
+# seed = random.randint(0, 1000000000)
+seed = 761358175
 calc_t_matrix = 'no'    #options: 'yes' and 'no'
 
 
@@ -30,14 +31,16 @@ calc_t_matrix = 'no'    #options: 'yes' and 'no'
 #print(num_zeros)
 #print(protein_IC)
 
-N_cells = 20
-num_timepoints = 30                   # number of time points, INCLUDING initial time point
+N_cells = 500
+num_timepoints = 4                   # number of time points, INCLUDING initial time point
 time_between_measurements =  1        # currently arbitrary units
 
 
 # Generate fake data
 print("Generating fake data for ", N_cells, " cells with ", num_timepoints, " time points per cell...")
-u_x, u_y, s_x, s_y, step_size, timesteps_per_measurement = generate_fake_data(N_cells, num_timepoints, time_between_measurements)
+u_x, u_y, s_x, s_y, step_size, timesteps_per_measurement = generate_fake_data(N_cells, num_timepoints,
+                                                                              time_between_measurements, rand_start =
+                                                                              True)
 print("Fake data successfully generated!")
 
 #print("s_x is ", s_x.flatten())

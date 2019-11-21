@@ -2,11 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0cb9b104-3729-4411-8e16-7f451edb822f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/2_gene_matrix_calculator/matrix_calc_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/2_gene_matrix_calculator/matrix_calc_main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/2_gene_matrix_calculator/simulation_files/get_fake_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/2_gene_matrix_calculator/simulation_files/get_fake_data.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/2_gene_matrix_calculator/simulation_files/simulation_parameters.py" beforeDir="false" afterPath="$PROJECT_DIR$/2_gene_matrix_calculator/simulation_files/simulation_parameters.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/two_gene/335410403.loom" beforeDir="false" afterPath="$PROJECT_DIR$/output/two_gene/335410403.loom" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/two_gene/93922959.loom" beforeDir="false" afterPath="$PROJECT_DIR$/output/two_gene/93922959.loom" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/two_gene/time_19/335410403.loom" beforeDir="false" afterPath="$PROJECT_DIR$/output/two_gene/time_19/335410403.loom" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/two_gene/time_5/93922959.loom" beforeDir="false" afterPath="$PROJECT_DIR$/output/two_gene/time_5/93922959.loom" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/two_gene/vel_93922959_deltat_0.1.csv" beforeDir="false" afterPath="$PROJECT_DIR$/output/two_gene/vel_93922959_deltat_0.1.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/velocity_tools/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/velocity_tools/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/velocity_tools/velocity_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/velocity_tools/velocity_utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity_tools/visual_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/velocity_tools/visual_utils.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -17,8 +22,8 @@
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/rna_velocity$matrix_calc_main.coverage" NAME="matrix_calc_main Coverage Results" MODIFIED="1573748858153" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Transition matrix calculator" />
     <SUITE FILE_PATH="coverage/rna_velocity$matrix_calc_main__2_.coverage" NAME="matrix_calc_main (2) Coverage Results" MODIFIED="1574108137072" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/1_gene_matrix_calculator" />
-    <SUITE FILE_PATH="coverage/rna_velocity$matrix_calc_main__3_.coverage" NAME="matrix_calc_main (3) Coverage Results" MODIFIED="1574363067695" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/2_gene_matrix_calculator" />
-    <SUITE FILE_PATH="coverage/rna_velocity$main.coverage" NAME="main Coverage Results" MODIFIED="1574364305908" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/velocity_tools" />
+    <SUITE FILE_PATH="coverage/rna_velocity$matrix_calc_main__3_.coverage" NAME="matrix_calc_main (3) Coverage Results" MODIFIED="1574367063273" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/2_gene_matrix_calculator" />
+    <SUITE FILE_PATH="coverage/rna_velocity$main.coverage" NAME="main Coverage Results" MODIFIED="1574367080916" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/velocity_tools" />
     <SUITE FILE_PATH="coverage/rna_velocity$matrix_calc_main__1_.coverage" NAME="matrix_calc_main (1) Coverage Results" MODIFIED="1574107239773" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Two gene transition matrix calculator 2" />
   </component>
   <component name="FileEditorManager">
@@ -26,17 +31,29 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/2_gene_matrix_calculator/matrix_calc_main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="191">
-              <caret line="30" column="18" selection-start-line="30" selection-start-column="18" selection-end-line="30" selection-end-column="18" />
+            <state relative-caret-position="292">
+              <caret line="25" column="16" selection-start-line="25" selection-start-column="16" selection-end-line="25" selection-end-column="16" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/2_gene_matrix_calculator/simulation_files/get_fake_data.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="510">
+              <caret line="34" column="44" selection-start-line="34" selection-start-column="44" selection-end-line="34" selection-end-column="44" />
+              <folding>
+                <element signature="e#85#103#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/velocity_tools/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="430">
-              <caret line="63" lean-forward="true" selection-start-line="63" selection-end-line="63" />
+            <state relative-caret-position="141">
+              <caret line="88" lean-forward="true" selection-start-line="88" selection-end-line="88" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -45,22 +62,22 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/2_gene_matrix_calculator/simulation_files/simulation_parameters.py">
+        <entry file="file://$PROJECT_DIR$/velocity_tools/visual_utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="428">
-              <caret line="31" selection-start-line="31" selection-end-line="31" />
+            <state relative-caret-position="303">
+              <caret line="161" column="46" lean-forward="true" selection-start-line="161" selection-start-column="46" selection-end-line="161" selection-end-column="46" />
               <folding>
-                <element signature="e#84#102#0" expanded="true" />
+                <element signature="e#0#18#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/velocity_tools/velocity_utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="299">
-              <caret line="96" column="69" lean-forward="true" selection-start-line="96" selection-start-column="69" selection-end-line="96" selection-end-column="69" />
+            <state relative-caret-position="704">
+              <caret line="101" column="46" lean-forward="true" selection-start-line="101" selection-start-column="46" selection-end-line="101" selection-end-column="46" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -92,11 +109,12 @@
         <option value="$PROJECT_DIR$/Transition matrix calculator/matrix_calc_main.py" />
         <option value="$PROJECT_DIR$/Two gene transition matrix calculator 2/matrix_calc_main.py" />
         <option value="$PROJECT_DIR$/1_gene_matrix_calculator/matrix_calc_main.py" />
-        <option value="$PROJECT_DIR$/velocity_tools/visual_utils.py" />
-        <option value="$PROJECT_DIR$/2_gene_matrix_calculator/matrix_calc_main.py" />
-        <option value="$PROJECT_DIR$/2_gene_matrix_calculator/simulation_files/simulation_parameters.py" />
-        <option value="$PROJECT_DIR$/velocity_tools/main.py" />
         <option value="$PROJECT_DIR$/velocity_tools/velocity_utils.py" />
+        <option value="$PROJECT_DIR$/2_gene_matrix_calculator/simulation_files/simulation_parameters.py" />
+        <option value="$PROJECT_DIR$/velocity_tools/visual_utils.py" />
+        <option value="$PROJECT_DIR$/2_gene_matrix_calculator/simulation_files/get_fake_data.py" />
+        <option value="$PROJECT_DIR$/2_gene_matrix_calculator/matrix_calc_main.py" />
+        <option value="$PROJECT_DIR$/velocity_tools/main.py" />
       </list>
     </option>
   </component>
@@ -130,18 +148,25 @@
               <item name="rna_velocity" type="b2602c69:ProjectViewProjectNode" />
               <item name="rna_velocity" type="462c0819:PsiDirectoryNode" />
               <item name="2_gene_matrix_calculator" type="462c0819:PsiDirectoryNode" />
-              <item name="model_files" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="rna_velocity" type="b2602c69:ProjectViewProjectNode" />
-              <item name="rna_velocity" type="462c0819:PsiDirectoryNode" />
-              <item name="2_gene_matrix_calculator" type="462c0819:PsiDirectoryNode" />
               <item name="simulation_files" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="rna_velocity" type="b2602c69:ProjectViewProjectNode" />
               <item name="rna_velocity" type="462c0819:PsiDirectoryNode" />
               <item name="output" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="rna_velocity" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rna_velocity" type="462c0819:PsiDirectoryNode" />
+              <item name="output" type="462c0819:PsiDirectoryNode" />
+              <item name="two_gene" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="rna_velocity" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rna_velocity" type="462c0819:PsiDirectoryNode" />
+              <item name="output" type="462c0819:PsiDirectoryNode" />
+              <item name="two_gene" type="462c0819:PsiDirectoryNode" />
+              <item name="time_3" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -309,22 +334,22 @@
       <workItem from="1573595889243" duration="1727000" />
       <workItem from="1573672860717" duration="23459000" />
       <workItem from="1574108003402" duration="14555000" />
-      <workItem from="1574359727639" duration="3242000" />
+      <workItem from="1574359727639" duration="5752000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="47604000" />
+    <option name="totallyTimeSpent" value="50114000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="877" extended-state="0" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12875536" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13376252" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3299363" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.35159236" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.30955413" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -338,7 +363,7 @@
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info active="true" anchor="right" id="SciView" order="3" visible="true" weight="0.35479257" />
+      <window_info active="true" anchor="right" id="SciView" order="3" visible="true" weight="0.30114448" />
       <window_info anchor="right" id="Database" order="4" />
     </layout>
   </component>
@@ -363,16 +388,6 @@
         <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
       </provider>
       <provider selected="true" editor-type-id="csv-text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/network_utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="23" selection-start-line="23" selection-end-line="23" />
-          <folding>
-            <element signature="e#0#20#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
     </entry>
     <entry file="file:///anaconda3/envs/py37/lib/python3.7/site-packages/loompy/loompy.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -494,30 +509,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/2_gene_matrix_calculator/simulation_files/get_fake_data.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#85#103#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/output/two_gene/time_29/s_20_cells_495300725.csv">
       <provider editor-type-id="csv-table-editor">
         <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
       </provider>
       <provider selected="true" editor-type-id="csv-text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/velocity_tools/visual_utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="179">
-          <caret line="74" column="41" selection-start-line="74" selection-start-column="41" selection-end-line="74" selection-end-column="41" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/1_gene_matrix_calculator/model_files/model_parameters.py">
       <provider selected="true" editor-type-id="text-editor" />
@@ -527,10 +523,36 @@
         <state relative-caret-position="-435" />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/output/two_gene/time_0/s_20_cells_872531592.csv">
+      <provider editor-type-id="csv-table-editor">
+        <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
+      </provider>
+      <provider selected="true" editor-type-id="csv-text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/network_utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="23" selection-start-line="23" selection-end-line="23" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/velocity_tools/velocity_utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="704">
+          <caret line="101" column="46" lean-forward="true" selection-start-line="101" selection-start-column="46" selection-end-line="101" selection-end-column="46" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/2_gene_matrix_calculator/simulation_files/simulation_parameters.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="428">
-          <caret line="31" selection-start-line="31" selection-end-line="31" />
+        <state relative-caret-position="450">
+          <caret line="30" column="30" lean-forward="true" selection-start-line="30" selection-start-column="30" selection-end-line="30" selection-end-column="30" />
           <folding>
             <element signature="e#84#102#0" expanded="true" />
           </folding>
@@ -539,38 +561,42 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/2_gene_matrix_calculator/choose_model_here.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="35" selection-start-line="16" selection-start-column="19" selection-end-line="16" selection-end-column="35" />
+        <state relative-caret-position="390">
+          <caret line="26" column="22" selection-start-line="26" selection-start-column="22" selection-end-line="26" selection-end-column="22" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/2_gene_matrix_calculator/matrix_calc_main.py">
+    <entry file="file://$PROJECT_DIR$/velocity_tools/visual_utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="191">
-          <caret line="30" column="18" selection-start-line="30" selection-start-column="18" selection-end-line="30" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/output/two_gene/time_0/s_20_cells_872531592.csv">
-      <provider editor-type-id="csv-table-editor">
-        <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
-      </provider>
-      <provider selected="true" editor-type-id="csv-text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/velocity_tools/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="430">
-          <caret line="63" lean-forward="true" selection-start-line="63" selection-end-line="63" />
+        <state relative-caret-position="303">
+          <caret line="161" column="46" lean-forward="true" selection-start-line="161" selection-start-column="46" selection-end-line="161" selection-end-column="46" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/velocity_tools/velocity_utils.py">
+    <entry file="file://$PROJECT_DIR$/2_gene_matrix_calculator/simulation_files/get_fake_data.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="96" column="69" lean-forward="true" selection-start-line="96" selection-start-column="69" selection-end-line="96" selection-end-column="69" />
+        <state relative-caret-position="510">
+          <caret line="34" column="44" selection-start-line="34" selection-start-column="44" selection-end-line="34" selection-end-column="44" />
+          <folding>
+            <element signature="e#85#103#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/2_gene_matrix_calculator/matrix_calc_main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="292">
+          <caret line="25" column="16" selection-start-line="25" selection-start-column="16" selection-end-line="25" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/velocity_tools/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="141">
+          <caret line="88" lean-forward="true" selection-start-line="88" selection-end-line="88" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>

@@ -10,8 +10,13 @@ import numpy as np
 from get_probdist import one_traj
 from simulation_parameters import x0, y0, params, step_size_naive
 
-def generate_fake_data(N_cells, num_timepoints, time_between_measurements):
-    
+
+def generate_fake_data(N_cells, num_timepoints, time_between_measurements, rand_start = False):
+    # for random starting points
+    if rand_start == True:
+        x0 = np.random.rand(N_cells)
+        y0 = np.random.rand(N_cells)
+
     # Determine number of time steps and step size.
     timesteps_per_measurement = int(np.ceil(time_between_measurements/step_size_naive))
     step_size = time_between_measurements/timesteps_per_measurement
@@ -26,7 +31,10 @@ def generate_fake_data(N_cells, num_timepoints, time_between_measurements):
     sy_measured = np.zeros((N_cells, num_timepoints))
     
     for i in range(0, N_cells):
-        x, y = one_traj(x0, y0, num_timesteps, step_size, params)
+        if rand_start == True:
+            x, y = one_traj(x0[i]*5, y0[i]*5, num_timesteps, step_size, params)
+        else:
+            x, y = one_traj(x0, y0, num_timesteps, step_size, params)
         for j in range(0, num_timesteps + 1):
             if j%timesteps_per_measurement == 0:
                 my_j = int(j/timesteps_per_measurement)
