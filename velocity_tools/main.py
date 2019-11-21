@@ -12,12 +12,12 @@ indir = '/Users/sarahmaddox/Documents/workspace/rna_velocity/output'
 # seed = 621008493 # seed used to generate fake data
 # N_cells = 10
 # multifactor = 1
-
-m = "one_gene" # model type
-tp = 6 # Number of timepoints
-seed = 50119327 # seed used to generate fake data
-N_cells = 100
-multifactor = 1
+#
+# m = "one_gene" # model type
+# tp = 6 # Number of timepoints
+# seed = 50119327 # seed used to generate fake data
+# N_cells = 100
+# multifactor = 1
 
 # m = "two_gene" # model type
 # tp = 6 # Number of timepoints
@@ -30,6 +30,12 @@ multifactor = 1
 # seed = 335410403 # seed used to generate fake data
 # N_cells = 20
 # multifactor = 1000
+
+m = "two_gene" # model type
+tp = 30 # Number of timepoints
+seed = 872531592 # seed used to generate fake data
+N_cells = 20
+multifactor = 1
 
 ################################################################################################################
 ''' 0. Import data '''
@@ -50,18 +56,17 @@ vlm = import_loom(op.join(indir,f"{m}/{seed}.loom"))
 plt.figure()
 plot_fractions(vlm)
 plt.show()
-#
+
 vlm._normalize_S()
 vlm._normalize_U()
 
-PCA(vlm, n_components=1, pick_cutoff=False)
+PCA(vlm, n_components=2, pick_cutoff=False)
 
 ################################################################################################################
 '''2. knn imputation and gamma fit'''
 #If knn == False, the below function just sets Sx= S and Ux = U for future functions
 # .Ux, .Sx, .Ux_sz, .Sx_sz set equal to .U, .S, .U_sz, .S_sz
-vlm = knn_impute(vlm, n_comps=1, knn = False, normalized=True)
-
+vlm = knn_impute(vlm, n_comps=2, knn = False, normalized=False)
 # Uses fake-imputed, normalized data .Sx_sz, .Us_sz to fit gamma, q, and R2
 
 ## TODO: if fit_offset = True and you use "unnormalized" data, the fit is very incorrect (the slope is usually
@@ -72,7 +77,6 @@ vlm = knn_impute(vlm, n_comps=1, knn = False, normalized=True)
 # state) [found in velocyto.estimation module]
 
 vlm.fit_gammas(use_imputed_data=True, use_size_norm=False, weighted=False, fit_offset=False)
-
 ################################################################################################################
 '''3. Velocity estimation'''
 # Predicting U with which_S = "Sx_sz" sets which_U_for)pred = "Sx_sz"  --> .velocity = Ux_sz - Upred
@@ -80,29 +84,33 @@ vlm.fit_gammas(use_imputed_data=True, use_size_norm=False, weighted=False, fit_o
 vlm.predict_U(which_S="Sx")
 vlm.calculate_velocity() # Only Sx_sz or Sx are implemented in velocyto
 
-print(colored("...saving hdf5 file as vlm", "blue"))
-vlm.to_hdf5(f"{seed}")
+# print(colored("...saving hdf5 file as vlm", "blue"))
+# vlm.to_hdf5(f"{seed}")
 
 vlm.set_clusters(vlm.ca['SampleID'], colormap=cm.get_cmap('tab20b'))
 
 ################################################################################################################
 '''4. Extrapolation at time t'''
 # Creates delta_S = The variation in gene expression and Sx_sz_t = extrapolated data at time t
-delta_t=1
+delta_t=.1
 
 vlm.calculate_shift(assumption = 'constant_velocity') # Only Sx_sz or Sx are implemented in velocyto
 vlm.extrapolate_cell_at_t(delta_t=delta_t) # Only Sx_sz or Sx are implemented in velocyto
 
 ################################################################################################################
 '''5. Plotting data'''
-plot_1_gene_arrows(vlm, which_S="Sx")
-# vel = pd.DataFrame(vlm.velocity, index = vlm.ra['Gene'], columns = vlm.ca['CellID'])
-# vel.to_csv(f"{indir}/{m}/vel_{seed}_deltat_{delta_t}.csv")
-plot_phase_portraits(vlm, genes=['gene_0'], which_S='Sx')
+plot_2_gene_arrows(vlm, which_S="Sx")
+vel = pd.DataFrame(vlm.velocity, index = vlm.ra['Gene'], columns = vlm.ca['CellID'])
+vel.to_csv(f"{indir}/{m}/vel_{seed}_deltat_{delta_t}.csv")
+plot_phase_portraits(vlm, genes=['gene_0', 'gene_1'], which_S='Sx')
 
 ################################################################################################################
 '''6. Use velocity to calculate transition probabilities and transition matrix'''
 # estimate_transition_prob:
 # Use cosine correlation to estimate transition probabilities for every cells to its embedding neighborhood
 
-# vlm.estimate_transition_prob()
+# estimate_transition_prob_smg(vlm, hidim = 'Sx', embed='pcs', transform = 'log', n_neighbors=100, sampled_fraction=1)
+# vlm.calculate_embedding_shift(sigma_corr=0.05, expression_scaling=False)
+# vlm.calculate_grid_arrows(smooth = 0.8, steps =(40,40), n_neighbors=100)
+# vlm.prepare_markov()
+# print(vlm.tr)

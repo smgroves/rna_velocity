@@ -45,7 +45,7 @@ def data2loom(indir, model, timepoints = 2, seed = 0, N_cells = 20, delim = ',',
     time = []
     for timepoint in range(timepoints):
         read_dir = f"{indir}/{model}/time_{str(timepoint)}"
-        print("Data should have rows = genes and columns = cells.")
+        # print("Data should have rows = genes and columns = cells.")
         tmp_datas = pd.read_csv(op.join(read_dir, f's_{N_cells}_cells_{seed}.csv'), index_col=0, header=0,
                               delimiter=delim)
         tmp_datau = pd.read_csv(op.join(read_dir, f'u_{N_cells}_cells_{seed}.csv'), index_col=0, header=0,
@@ -87,7 +87,7 @@ def data2loom(indir, model, timepoints = 2, seed = 0, N_cells = 20, delim = ',',
         layers = {'spliced':np.array(datas), 'unspliced': np.array(datau), 'ambiguous': np.zeros(np.array(datau).shape)}
         tmp_layers = {"": total.astype("float32", order="C", copy=False)}
 
-        tmp_layers.update({layer_name: layers[layer_name].astype('uint32', order="C", copy=False) for
+        tmp_layers.update({layer_name: layers[layer_name].astype('float32', order="C", copy=False) for
                            layer_name in layers.keys()})
         loompy.create(filename=op.join(out_dir,filename), layers=tmp_layers, row_attrs=ra, col_attrs=ca,
                       file_attrs={"velocyto.__version__": vcy.__version__, "velocyto.logic": 'Default'})
@@ -202,7 +202,7 @@ def knn_impute(vlm, n_comps = 100, knn = True, b_sight = 100, k = 50, balanced =
     return vlm
 
 
-def estimate_transition_prob(self, hidim= "Sx_sz", embed= "ts", transform = "sqrt",
+def estimate_transition_prob_smg(self, hidim= "Sx_sz", embed= "ts", transform = "sqrt",
                              ndims = None, n_sight = None, psc = None,
                              knn_random= True, sampled_fraction = 0.3,
                              sampling_probs = (0.5, 0.1), max_dist_embed =  None,
