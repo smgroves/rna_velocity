@@ -23,16 +23,16 @@ outdir= '/Users/sarahmaddox/Documents/workspace/rna_velocity/output/'
 import random
 # ============================================================================================
 # seed = random.randint(0, 1000000000)
-seed = 761358175
-calc_t_matrix = 'no'    #options: 'yes' and 'no'
+seed = 93922959
+calc_t_matrix = 'yes'    #options: 'yes' and 'no'
 
 
 #num_zeros, protein_IC = generate_IC()
 #print(num_zeros)
 #print(protein_IC)
 
-N_cells = 500
-num_timepoints = 4                   # number of time points, INCLUDING initial time point
+N_cells = 20
+num_timepoints = 6                   # number of time points, INCLUDING initial time point
 time_between_measurements =  1        # currently arbitrary units
 
 
@@ -61,23 +61,23 @@ if calc_t_matrix == 'yes':
     
     # Compute P_trans starting at each state for fixed time. 
     t_matrix = get_t_matrix(state_list, num_states, voronoi_kdtree, step_size, timesteps_per_measurement)
-    t_matrix2 = get_t_matrix(state_list, num_states, voronoi_kdtree, step_size, timesteps_per_measurement)
+    # t_matrix2 = get_t_matrix(state_list, num_states, voronoi_kdtree, step_size, timesteps_per_measurement)
     
     
     
     print("Final transition matrix")
     print(t_matrix)
-    print(t_matrix2)
+    # print(t_matrix2)
     print("T matrix size", t_matrix.size)
     
-    m_norm = np.linalg.norm(t_matrix - t_matrix2)
-    print("Matrix norm :", m_norm)
+    # m_norm = np.linalg.norm(t_matrix - t_matrix2)
+    # print("Matrix norm :", m_norm)
     w, v = np.linalg.eig(t_matrix)
     print(w)
     
-    w2, v2 = np.linalg.eig(t_matrix2)
-    print(w2)
-
+    # w2, v2 = np.linalg.eig(t_matrix2)
+    # print(w2)
+    np.savetxt(f'sim_tm_{seed}.csv', t_matrix)
 
 # ====================================================================
 

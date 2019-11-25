@@ -144,7 +144,7 @@ def plot_fractions(self, save2file: str = None):
     if save2file:
         plt.savefig(save2file, bbox_inches="tight")
 
-def PCA(vlm, n_components, pick_cutoff = True):
+def PCA(vlm, n_components, pick_cutoff = True, which_S = 'S_norm'):
     '''
 
     :param vlm: VelocytoLoom object
@@ -154,7 +154,7 @@ def PCA(vlm, n_components, pick_cutoff = True):
     :return: vlm object with .pcs attribute, and plots cumulative explained variance if pick_cutoff == True
     '''
     print('...Performing PCA')
-    vlm.perform_PCA(n_components=n_components)
+    vlm.perform_PCA(n_components=n_components,which = which_S)
     if pick_cutoff == True:
         plt.figure()
         plt.plot(np.cumsum(vlm.pca.explained_variance_ratio_)[:100])
@@ -359,8 +359,9 @@ def estimate_transition_prob_smg(self, hidim= "Sx_sz", embed= "ts", transform = 
                                                           threads=threads)
         elif transform == "sqrt":
             delta_hi_dim = hi_dim_t - hi_dim
-            self.corrcoef = colDeltaCorSqrtpartial(hi_dim,
-                                                   np.sqrt(np.abs(delta_hi_dim) + psc) * np.sign(delta_hi_dim),
+            self.corrcoef = colDeltaCorSqrtpartial(hi_dim.astype(np.float64).copy(order='C'),
+                                                   (np.sqrt(np.abs(delta_hi_dim) + psc) * np.sign(
+                                                       delta_hi_dim)).copy(order='C').astype(np.float64),
                                                    neigh_ixs, threads=threads, psc=psc)
             if calculate_randomized:
                 logging.debug(f"Correlation Calculation for negative control")
