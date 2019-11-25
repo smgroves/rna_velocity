@@ -11,9 +11,9 @@ We have implemented two models so far: 1 self-regulating gene and a 2 gene model
 We use the original RNA velocity package from La Manno et al (2018) [`velocyto`] to calculate RNA velocity for each gene for each cell in the fake dataset. Other methods (such as scVelo) may be implemented in the future.
 
 We initialize `N` cells randomly and then let the system evolve under the dynamics of the network model. With multiple fake timepoints, we can compare three things:
-1. Extrapolated t1, based on RNA velocity at t0, *vs* t1, based on second time point in dataset
-2. Extrapolated t1, based on network model dynamics, *vs* t1, based on second time point in dataset
-3. Extrapolated t1, based on RNA velocity, *vs* extrapolated t1, based on network model dynamics.
+1. Extrapolated `t_1`, based on RNA velocity at `t_0`, **vs** `t_1`, based on second time point in dataset
+2. Extrapolated `t_1`, based on network model dynamics, **vs** `t_1`, based on second time point in dataset
+3. Extrapolated `t_1`, based on RNA velocity at `t_0`, **vs** extrapolated `t_1`, based on network model dynamics.
 
 Comparison # 1 is done in the original La Manno paper, and will be used to investigate the accuracy of RNA velocity based on the actual evolution of the system. Comparison # 2 should give us a very small error, and this will give us a reference for the magnitude of error to expect based solely on stochasticity in the model. Comparison # 3 is what we are actually interested in, and we will make this comparison by interrogating the transition matrices derived from the network model and from RNA velocity between all time points. This comparison thus requires that we build an RNA-velocity-derived transition matrix by taking the cosine correlation between sampled points and predicted velocity, thus converting a sparse velocity field into a Markov chain model. This step in and of itself may cause errors due to the limitations of projecting velocity vectors onto pre-defined discrete sampled points, which we may choose to investigate at a later time.
 
